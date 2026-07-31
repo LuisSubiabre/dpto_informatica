@@ -1,0 +1,124 @@
+---
+import { Image } from 'astro:assets';
+import AboutHeroImage from '../assets/blog-placeholder-about.jpg';
+import tip01 from '../assets/tips/01.png';
+import tip02 from '../assets/tips/02.png';
+import tip03 from '../assets/tips/03.png';
+import tip04 from '../assets/tips/04.png';
+import tip05 from '../assets/tips/05.png';
+import Layout from '../layouts/BlogPost.astro';
+
+const tips = [
+	{
+		src: tip01,
+		title: 'Tip Tecnológico #01',
+		alt: 'Tip Tecnológico #01: Organizar archivos en Google Drive',
+	},
+	{
+		src: tip02,
+		title: 'Tip Tecnológico #02',
+		alt: 'Tip Tecnológico #02: Compartir archivos en Google Drive',
+	},
+	{
+		src: tip03,
+		title: 'Tip Tecnológico #03',
+		alt: 'Tip Tecnológico #03: Cómo crear un formulario en Google Forms',
+	},
+	{
+		src: tip04,
+		title: 'Tip Tecnológico #04',
+		alt: 'Tip Tecnológico #04: Cómo usar Google Calendar',
+	},
+	{
+		src: tip05,
+		title: 'Tip Tecnológico #05',
+		alt: 'Tip Tecnológico #05: Cómo crear reuniones en Google Meet',
+	},
+];
+---
+
+<Layout
+	title="Tips Tecnológicos"
+	description="Tips tecnológicos de la Coordinación Tecnológica Educativa del Liceo Experimental UMAG."
+	pubDate={new Date('July 31 2026')}
+	heroImage={AboutHeroImage}
+>
+	<p>
+		Infografías con consejos prácticos para aprovechar las herramientas de Google Workspace en el
+		contexto escolar.
+	</p>
+
+	<div class="tips-wrap">
+		<div class="tips">
+			{
+				tips.map((tip) => (
+					<figure class="tip">
+						<a href={tip.src.src} target="_blank" rel="noopener noreferrer">
+							<Image
+								src={tip.src}
+								alt={tip.alt}
+								widths={[320, 480, 720]}
+								sizes="(max-width: 600px) 100vw, (max-width: 960px) 50vw, 360px"
+							/>
+						</a>
+						<figcaption>{tip.title}</figcaption>
+					</figure>
+				))
+			}
+		</div>
+	</div>
+</Layout>
+
+<style>
+	.tips-wrap {
+		width: min(1080px, calc(100vw - 2em));
+		position: relative;
+		left: 50%;
+		transform: translateX(-50%);
+		margin-top: 2em;
+	}
+	.tips {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 1.5em;
+	}
+	.tip {
+		margin: 0;
+		display: flex;
+		flex-direction: column;
+	}
+	.tip a {
+		display: block;
+		line-height: 0;
+		border-radius: 12px;
+		overflow: hidden;
+		box-shadow: var(--box-shadow);
+		transition: transform 0.2s ease, box-shadow 0.2s ease;
+	}
+	.tip a:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 8px 24px rgba(var(--black), 12%);
+	}
+	.tip img {
+		width: 100%;
+		height: auto;
+		display: block;
+	}
+	.tip figcaption {
+		margin-top: 0.75em;
+		text-align: center;
+		font-weight: 600;
+		font-size: 0.95em;
+		color: rgb(var(--gray-dark));
+	}
+	@media (max-width: 960px) {
+		.tips {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+	@media (max-width: 600px) {
+		.tips {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>
