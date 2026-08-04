@@ -1,0 +1,140 @@
+---
+import { Image } from 'astro:assets';
+import AboutHeroImage from '../assets/blog-placeholder-about.jpg';
+import onaScreenshot from '../assets/software/ona.png';
+import fichaDownload from '../assets/software/ficha.rar?url';
+import Layout from '../layouts/BlogPost.astro';
+
+const software = [
+	{
+		name: 'Ona',
+		description: 'Aplicación web de gestión escolar.',
+		author: 'lsubiabre',
+		screenshot: onaScreenshot,
+		screenshotAlt: 'Captura de Ona: módulo Acles — Talleres ACLE',
+		modules: [
+			'Académico',
+			'Inspectoría',
+			'Convivencia',
+			'Orientación',
+			'Coordinación Acles',
+			'Monitor Acle',
+			'Gestión de encuestas FD',
+			'Accidente Escolar',
+		],
+	},
+	{
+		name: 'Ficha 2026',
+		description: 'Aplicación de escritorio',
+		linkDownload: fichaDownload,
+		modules: ['Ficha de estudiantes'],
+	},
+];
+---
+
+<Layout
+	title="Software"
+	description="Software desarrollado por el Departamento de Informática del Liceo Experimental UMAG."
+	pubDate={new Date('August 04 2026')}
+	heroImage={AboutHeroImage}
+>
+	<p>Herramientas desarrolladas para apoyar la gestión escolar del establecimiento.</p>
+
+	<ul class="software-list">
+		{
+			software.map((app) => (
+				<li class="software-item">
+					<h2>{app.name}</h2>
+					<p>{app.description}</p>
+					{app.author && <p class="author">Autor: {app.author}</p>}
+					{app.screenshot && (
+						<figure class="screenshot">
+							<Image
+								src={app.screenshot}
+								alt={app.screenshotAlt ?? ''}
+								widths={[480, 720, 1080]}
+								sizes="(max-width: 720px) 100vw, 720px"
+							/>
+						</figure>
+					)}
+					{app.linkDownload && (
+						<p class="download">
+							<a href={app.linkDownload} download>
+								Descargar
+							</a>
+						</p>
+					)}
+					<h3>Módulos</h3>
+					<ul class="modules">
+						{app.modules.map((mod) => (
+							<li>{mod}</li>
+						))}
+					</ul>
+				</li>
+			))
+		}
+	</ul>
+</Layout>
+
+<style>
+	.software-list {
+		list-style: none;
+		padding: 0;
+		margin: 2em 0 0;
+	}
+	.software-item {
+		margin: 0;
+		padding: 0;
+	}
+	.software-item + .software-item {
+		margin-top: 2.5em;
+		padding-top: 2.5em;
+		border-top: 1px solid rgba(var(--gray), 20%);
+	}
+	.software-item h2 {
+		margin: 0 0 0.35em;
+	}
+	.software-item > p {
+		margin: 0 0 1.25em;
+	}
+	.software-item .author {
+		margin-top: -0.75em;
+		color: rgb(var(--gray));
+	}
+	.screenshot {
+		margin: 0 0 1.5em;
+	}
+	.screenshot img {
+		width: 100%;
+		height: auto;
+		display: block;
+		border-radius: 12px;
+		box-shadow: var(--box-shadow);
+	}
+	.download {
+		margin: 0 0 1.25em;
+	}
+	.download a {
+		display: inline-block;
+		padding: 0.5em 1em;
+		background: var(--accent);
+		color: white;
+		text-decoration: none;
+		border-radius: 6px;
+		font-weight: 600;
+	}
+	.download a:hover {
+		opacity: 0.9;
+	}
+	.software-item h3 {
+		margin: 0 0 0.5em;
+		font-size: 1.1em;
+	}
+	.modules {
+		margin: 0;
+		padding-left: 1.25em;
+	}
+	.modules li {
+		margin-bottom: 0.35em;
+	}
+</style>

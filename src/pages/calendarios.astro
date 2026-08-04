@@ -5,9 +5,45 @@ import Layout from '../layouts/BlogPost.astro';
 
 <Layout
 	title="Calendarios"
-	description="Lorem ipsum dolor sit amet"
+	description="Calendarios del Departamento de Informática del Liceo Experimental UMAG."
 	pubDate={new Date('August 08 2021')}
 	heroImage={AboutHeroImage}
 >
-	
+	<section class="calendar">
+		<h2>Lab. Computación</h2>
+		<iframe
+			src="https://calendar.google.com/calendar/embed?src=liceoexperimental.cl_fg6soror9dgpdr758c84sh8oo4%40group.calendar.google.com&ctz=America%2FPunta_Arenas"
+			style="border: 0"
+			width="800"
+			height="600"
+			frameborder="0"
+			scrolling="no"
+			title="Calendario Lab. Computación"
+		></iframe>
+	</section>
+
+	<section class="calendar">
+		<h2>Lab. Móvil</h2>
+		<iframe
+			src="https://calendar.google.com/calendar/embed?src=liceoexperimental.cl_4jhrja733u2ca095o3ki4uuhrs%40group.calendar.google.com&ctz=America%2FPunta_Arenas"
+			style="border: 0"
+			width="800"
+			height="600"
+			frameborder="0"
+			scrolling="no"
+			title="Calendario Lab. Móvil"
+		></iframe>
+	</section>
 </Layout>
+
+<style>
+	.calendar h2 {
+		margin: 0 0 1em;
+	}
+	.calendar + .calendar {
+		margin-top: 2.5em;
+	}
+	.calendar iframe {
+		max-width: 100%;
+	}
+</style>
