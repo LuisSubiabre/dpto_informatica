@@ -1,22 +1,40 @@
 ---
 import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 import AboutHeroImage from '../assets/blog-placeholder-about.jpg';
 import onaScreenshot from '../assets/software/ona.png';
 import fichaDownload from '../assets/software/ficha.rar?url';
 import Layout from '../layouts/BlogPost.astro';
 
-const software = [
+type SoftwareApp = {
+	name: string;
+	description: string;
+	author?: string;
+	link?: string;
+	linkDownload?: string;
+	screenshot?: ImageMetadata;
+	screenshotAlt?: string;
+	modules: string[];
+};
+
+const software: SoftwareApp[] = [
 	{
-		name: 'Kimche',
-		description: 'Aplicación web',
+		name: 'Kimche - Libro Digital',
+		description: 'Aplicación web de gestión escolar.',
 		modules: ['Libro Digital'],
 		link: 'https://app.kimche.cl',
 	},
 	{
 		name: 'Kimche Familia',
-		description: 'Aplicación movil.',
-
-		modules: ['Calificaciones, asistencia, atrasos, observaciones y descargar certificados'],
+		description: 'Aplicación móvil para apoderados.',
+		modules: [
+			'Calificaciones',
+			'Asistencia',
+			'Atrasos',
+			'Observaciones',
+			'Descargar certificados',
+		],
+		link: 'https://www.kimche.co/kimche-familia-ingreso-apoderados/',
 	},
 	{
 		name: 'Ona',
@@ -34,10 +52,11 @@ const software = [
 			'Gestión de encuestas FD',
 			'Accidente Escolar',
 		],
+		link: 'https://leumag.liceoexperimental.cl',
 	},
 	{
 		name: 'Ficha 2026',
-		description: 'Aplicación de escritorio',
+		description: 'Aplicación de escritorio para fichas de estudiantes.',
 		linkDownload: fichaDownload,
 		modules: ['Ficha de estudiantes'],
 	},
@@ -46,42 +65,70 @@ const software = [
 
 <Layout
 	title="Software"
-	description="Software desarrollado por el Departamento de Informática del Liceo Experimental UMAG."
+	description="Software disponible y desarrollado por el Departamento de Informática del Liceo Experimental UMAG."
 	pubDate={new Date('August 04 2026')}
 	heroImage={AboutHeroImage}
 >
-	<p>Herramientas desarrolladas para apoyar la gestión escolar del establecimiento.</p>
+	<p class="intro">
+		Herramientas para apoyar la gestión escolar. Cada ficha indica si puedes abrirla en línea o
+		descargarla.
+	</p>
 
 	<ul class="software-list">
 		{
 			software.map((app) => (
 				<li class="software-item">
-					<h2>{app.name}</h2>
-					<p>{app.description}</p>
-					{app.author && <p class="author">Autor: {app.author}</p>}
-					{app.screenshot && (
-						<figure class="screenshot">
-							<Image
-								src={app.screenshot}
-								alt={app.screenshotAlt ?? ''}
-								widths={[480, 720, 1080]}
-								sizes="(max-width: 720px) 100vw, 720px"
-							/>
-						</figure>
-					)}
-					{app.linkDownload && (
-						<p class="download">
-							<a href={app.linkDownload} download>
-								Descargar
-							</a>
-						</p>
-					)}
-					<h3>Módulos</h3>
-					<ul class="modules">
-						{app.modules.map((mod) => (
-							<li>{mod}</li>
-						))}
-					</ul>
+					<article>
+						<header class="item-header">
+							<div class="item-heading">
+								<h2>{app.name}</h2>
+								{app.author && <p class="author">Autor: {app.author}</p>}
+							</div>
+							{(app.link || app.linkDownload) && (
+								<div class="actions">
+									{app.link && (
+										<a
+											class="btn btn-primary"
+											href={app.link}
+											target="_blank"
+											rel="noopener noreferrer"
+										>
+											Ir
+											<span class="sr-only"> {app.name} (se abre en una pestaña nueva)</span>
+										</a>
+									)}
+									{app.linkDownload && (
+										<a class="btn btn-secondary" href={app.linkDownload} download>
+											Descargar
+											<span class="sr-only"> {app.name}</span>
+										</a>
+									)}
+								</div>
+							)}
+						</header>
+
+						<p class="description">{app.description}</p>
+
+						{app.screenshot && (
+							<figure class="screenshot">
+								<Image
+									src={app.screenshot}
+									alt={app.screenshotAlt ?? `Captura de pantalla de ${app.name}`}
+									widths={[480, 720, 1080]}
+									sizes="(max-width: 720px) 100vw, 720px"
+								/>
+							</figure>
+						)}
+
+						<section class="modules-section" aria-labelledby={`${app.name}-modulos`}>
+							<h3 id={`${app.name}-modulos`}>Módulos</h3>
+							<ul class="modules">
+								{app.modules.map((mod) => (
+									<li>{mod}</li>
+								))}
+							</ul>
+						</section>
+					</article>
 				</li>
 			))
 		}
@@ -89,64 +136,131 @@ const software = [
 </Layout>
 
 <style>
+	.intro {
+		margin-bottom: 1.5em;
+	}
 	.software-list {
 		list-style: none;
 		padding: 0;
-		margin: 2em 0 0;
-	}
-	.software-item {
 		margin: 0;
-		padding: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 1.25em;
 	}
-	.software-item + .software-item {
-		margin-top: 2.5em;
-		padding-top: 2.5em;
-		border-top: 1px solid rgba(var(--gray), 20%);
+	.software-item article {
+		padding: 1.25em 1.35em;
+		background: white;
+		border: 1px solid rgba(var(--gray), 18%);
+		border-radius: 12px;
+		box-shadow: 0 1px 3px rgba(var(--black), 4%);
 	}
-	.software-item h2 {
-		margin: 0 0 0.35em;
+	.item-header {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: flex-start;
+		justify-content: space-between;
+		gap: 0.75em 1em;
+		margin-bottom: 0.5em;
 	}
-	.software-item > p {
-		margin: 0 0 1.25em;
+	.item-heading h2 {
+		margin: 0;
+		font-size: 1.45em;
+		line-height: 1.25;
 	}
-	.software-item .author {
-		margin-top: -0.75em;
+	.author {
+		margin: 0.25em 0 0;
+		font-size: 0.9em;
 		color: rgb(var(--gray));
 	}
+	.description {
+		margin: 0 0 1em;
+		color: rgb(var(--gray-dark));
+	}
+	.actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5em;
+	}
+	.btn {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		min-height: 2.5rem;
+		padding: 0.45em 1em;
+		border-radius: 8px;
+		font-weight: 700;
+		font-size: 0.95em;
+		text-decoration: none;
+		line-height: 1.2;
+	}
+	.btn:focus-visible {
+		outline: 3px solid var(--accent);
+		outline-offset: 2px;
+	}
+	.btn-primary {
+		background: var(--accent);
+		color: white;
+	}
+	.btn-primary:hover {
+		background: var(--accent-dark);
+		color: white;
+	}
+	.btn-secondary {
+		background: white;
+		color: var(--accent);
+		border: 2px solid var(--accent);
+	}
+	.btn-secondary:hover {
+		background: rgba(35, 55, 255, 0.06);
+		color: var(--accent-dark);
+	}
 	.screenshot {
-		margin: 0 0 1.5em;
+		margin: 0 0 1.25em;
 	}
 	.screenshot img {
 		width: 100%;
 		height: auto;
 		display: block;
-		border-radius: 12px;
-		box-shadow: var(--box-shadow);
+		border-radius: 10px;
+		border: 1px solid rgba(var(--gray), 15%);
 	}
-	.download {
-		margin: 0 0 1.25em;
-	}
-	.download a {
-		display: inline-block;
-		padding: 0.5em 1em;
-		background: var(--accent);
-		color: white;
-		text-decoration: none;
-		border-radius: 6px;
-		font-weight: 600;
-	}
-	.download a:hover {
-		opacity: 0.9;
-	}
-	.software-item h3 {
-		margin: 0 0 0.5em;
-		font-size: 1.1em;
+	.modules-section h3 {
+		margin: 0 0 0.6em;
+		font-size: 1em;
+		color: rgb(var(--gray));
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+		font-weight: 700;
 	}
 	.modules {
+		list-style: none;
 		margin: 0;
-		padding-left: 1.25em;
+		padding: 0;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.45em;
 	}
 	.modules li {
-		margin-bottom: 0.35em;
+		margin: 0;
+		padding: 0.3em 0.7em;
+		background: rgba(var(--gray-light), 70%);
+		border-radius: 999px;
+		font-size: 0.88em;
+		line-height: 1.3;
+		color: rgb(var(--gray-dark));
+	}
+	@media (max-width: 560px) {
+		.software-item article {
+			padding: 1em;
+		}
+		.item-header {
+			flex-direction: column;
+		}
+		.actions {
+			width: 100%;
+		}
+		.btn {
+			flex: 1;
+		}
 	}
 </style>
