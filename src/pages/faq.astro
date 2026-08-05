@@ -1,0 +1,54 @@
+---
+import AboutHeroImage from '../assets/blog-placeholder-about.jpg';
+import Layout from '../layouts/BlogPost.astro';
+
+const preguntas = [
+	{
+		q: '¿Cómo recupero mi contraseña institucional?',
+		a: 'Usa la opción de recuperación de Google con tu correo @liceoexperimental.cl. Si no puedes, contacta al Departamento de Informática.',
+	},
+	{
+		q: '¿Dónde reservo un laboratorio?',
+		a: 'Revisa la disponibilidad en Calendarios y coordina con el departamento según el laboratorio que necesites.',
+	},
+	{
+		q: '¿Qué hago si un equipo no funciona?',
+		a: 'Usa Reportar problema e indica sala, equipo y una breve descripción del fallo.',
+	},
+];
+---
+
+<Layout
+	title="Preguntas frecuentes"
+	description="Respuestas a las consultas más comunes del Departamento de Informática."
+	pubDate={new Date('August 04 2026')}
+	heroImage={AboutHeroImage}
+>
+	<p>Respuestas rápidas a dudas habituales de docentes y estudiantes.</p>
+
+	{
+		preguntas.map((item) => (
+			<details class="faq-item">
+				<summary>{item.q}</summary>
+				<p>{item.a}</p>
+			</details>
+		))
+	}
+</Layout>
+
+<style>
+	.faq-item {
+		margin-bottom: 1em;
+		padding: 0.75em 1em;
+		background: white;
+		border-radius: 8px;
+		box-shadow: 0 1px 4px rgba(var(--black), 6%);
+	}
+	.faq-item summary {
+		cursor: pointer;
+		font-weight: 700;
+	}
+	.faq-item p {
+		margin: 0.75em 0 0;
+	}
+</style>
