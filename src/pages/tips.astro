@@ -6,6 +6,7 @@ import tip02 from '../assets/tips/02.png';
 import tip03 from '../assets/tips/03.png';
 import tip04 from '../assets/tips/04.png';
 import tip05 from '../assets/tips/05.png';
+import tip06 from '../assets/tips/06.png';
 import Layout from '../layouts/BlogPost.astro';
 
 const tips = [
@@ -13,26 +14,37 @@ const tips = [
 		src: tip01,
 		title: 'Tip Tecnológico #01',
 		alt: 'Tip Tecnológico #01: Organizar archivos en Google Drive',
+		date: new Date('Mayo 26 2026'),
 	},
 	{
 		src: tip02,
 		title: 'Tip Tecnológico #02',
 		alt: 'Tip Tecnológico #02: Compartir archivos en Google Drive',
+		date: new Date('Junio 05 2026'),
 	},
 	{
 		src: tip03,
 		title: 'Tip Tecnológico #03',
 		alt: 'Tip Tecnológico #03: Cómo crear un formulario en Google Forms',
+		date: new Date('Junio 08 2026'),
 	},
 	{
 		src: tip04,
 		title: 'Tip Tecnológico #04',
 		alt: 'Tip Tecnológico #04: Cómo usar Google Calendar',
+		date: new Date('Junio 12 2026'),
 	},
 	{
 		src: tip05,
 		title: 'Tip Tecnológico #05',
 		alt: 'Tip Tecnológico #05: Cómo crear reuniones en Google Meet',
+		date: new Date('Junio 19 2026'),
+	},
+		{
+		src: tip06,
+		title: 'Tip Tecnológico #06',
+		alt: 'Tip Tecnológico #06: Tipos de IA según su capacidad de aprendizaje',
+		date: new Date('08 07 2026'),
 	},
 ];
 ---
@@ -61,8 +73,10 @@ const tips = [
 								sizes="(max-width: 600px) 100vw, (max-width: 960px) 50vw, 360px"
 							/>
 						</a>
-						<figcaption>{tip.title}</figcaption>
+						<figcaption>{tip.title}<div><small>Fecha: {tip.date.toLocaleDateString("es-CL")}</small></div></figcaption>
+						
 					</figure>
+					
 				))
 			}
 		</div>
